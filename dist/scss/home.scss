@@ -1,0 +1,61 @@
+.content {
+  background-image: linear-gradient(
+      to bottom,
+      rgba(242, 92, 84, 0.5),
+      rgba(242, 92, 84, 0.5)
+    ),
+    url(../assets/images/hero.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: calc(100vh);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.box {
+  width: 500px;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.circle1 {
+  height: 300px;
+  width: 300px;
+  background-color: #ffd972;
+  border-radius: 50%;
+  z-index: 99;
+  padding: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.circle1 p {
+  width: 170px;
+  text-align: center;
+}
+
+.circle2 {
+  height: 200px;
+  width: 200px;
+  background-color: #fcbcb8;
+  border-radius: 50%;
+  position: absolute;
+  top: 15px;
+  right: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.circle2 span {
+  margin-bottom: 25px;
+  width: 150px;
+  margin-left: 15px;
+}
