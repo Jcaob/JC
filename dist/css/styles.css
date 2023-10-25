@@ -97,7 +97,7 @@ p {
   left: 0;
   height: calc(100vh - 50px);
   width: 100%;
-  background-color: #06135d;
+  background-color: #fcbcb8;
 }
 
 .open .mobile-menu {
@@ -107,7 +107,7 @@ p {
   left: 0;
   height: calc(100vh - 50px);
   width: 100%;
-  background-color: #06135d;
+  background-color: #fcbcb8;
   justify-content: center;
   align-items: center;
   display: flex;
@@ -228,6 +228,26 @@ footer {
   color: #393939;
 }
 
+@media (max-width: 768px) {
+  .footer-links {
+    font-size: 15px;
+  }
+  .footer-cc {
+    font-size: 15px;
+    width: 270px;
+  }
+}
+@media (max-width: 390px) {
+  footer {
+    flex-direction: column;
+  }
+  .footer-links {
+    font-size: 10px;
+  }
+  .footer-cc {
+    font-size: 10px;
+  }
+}
 .account-wrapper {
   height: 100vh;
   display: flex;
@@ -275,6 +295,7 @@ footer {
   }
   .account-wrapper .logIn {
     margin-left: 0;
+    margin-top: 100px;
   }
   .account-wrapper .signUp {
     margin-right: 0;
@@ -283,7 +304,29 @@ footer {
     margin-bottom: 100px;
   }
   .account-wrapper .header {
-    margin-top: 100px;
+    margin-top: 10px;
+  }
+}
+@media (max-width: 390px) {
+  .account-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+  .account-wrapper .logIn {
+    margin-left: 0;
+    margin-top: 70px;
+  }
+  .account-wrapper .signUp {
+    margin-right: 0;
+  }
+  .account-wrapper .submit {
+    margin-bottom: 100px;
+  }
+  .account-wrapper .header {
+    margin-top: 10px;
+  }
+  .account-wrapper .input {
+    margin-top: 25px;
   }
 }
 

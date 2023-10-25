@@ -37,3 +37,27 @@ footer {
   margin-left: 15px;
   color: #393939;
 }
+
+@media (max-width: 768px) {
+  .footer-links {
+    font-size: 15px;
+  }
+
+  .footer-cc {
+    font-size: 15px;
+    width: 270px;
+  }
+}
+@media (max-width: 390px) {
+  footer {
+    flex-direction: column;
+  }
+
+  .footer-links {
+    font-size: 10px;
+  }
+
+  .footer-cc {
+    font-size: 10px;
+  }
+}
