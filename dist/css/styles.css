@@ -61,6 +61,7 @@ p {
   padding: 10px 30px;
   border-radius: 25px;
   background-color: #ffd972;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .hamburger-icon {
@@ -225,6 +226,65 @@ footer {
 .footer-socials img {
   margin-left: 15px;
   color: #393939;
+}
+
+.account-wrapper {
+  height: 100vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffd972;
+}
+.account-wrapper .logIn {
+  display: flex;
+  flex-direction: column;
+  margin-left: 500px;
+}
+.account-wrapper .signUp {
+  margin-right: 395px;
+  display: flex;
+  flex-direction: column;
+}
+.account-wrapper .input {
+  margin-top: 45px;
+  outline: 0;
+  border-width: 0 0 2px;
+  background-color: #ffd972;
+  border-color: black;
+  color: #181818;
+}
+.account-wrapper .submit {
+  margin-top: 44px;
+  margin-bottom: 220px;
+  height: 45px;
+  width: 170px;
+  background-color: #ffd972;
+  border-radius: 25px;
+  border: none;
+  color: black;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  cursor: pointer;
+}
+.account-wrapper .header {
+  font-size: 26px;
+}
+@media (max-width: 768px) {
+  .account-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+  .account-wrapper .logIn {
+    margin-left: 0;
+  }
+  .account-wrapper .signUp {
+    margin-right: 0;
+  }
+  .account-wrapper .submit {
+    margin-bottom: 100px;
+  }
+  .account-wrapper .header {
+    margin-top: 100px;
+  }
 }
 
 /*# sourceMappingURL=styles.css.map */
