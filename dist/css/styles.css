@@ -288,6 +288,7 @@ footer {
 .account-wrapper .header {
   font-size: 26px;
 }
+
 @media (max-width: 768px) {
   .account-wrapper {
     flex-direction: column;
