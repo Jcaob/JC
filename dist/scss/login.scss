@@ -37,8 +37,19 @@
     color: black;
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2),
       0 6px 20px 0 rgba(0, 0, 0, 0.19);
-
+    transition: 0.5s;
     cursor: pointer;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .submit:hover {
+    height: 55px;
+    width: 180px;
+    transition: 0.5s;
   }
 
   .header {

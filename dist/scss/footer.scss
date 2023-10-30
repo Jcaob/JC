@@ -26,6 +26,12 @@ footer {
 .footer-links li {
   list-style-type: none;
   margin-left: 20px;
+  transition: 0.5s;
+}
+
+.footer-links li:hover {
+  font-size: larger;
+  transition: 0.5s;
 }
 
 .footer-socials {
@@ -36,6 +42,14 @@ footer {
 .footer-socials img {
   margin-left: 15px;
   color: #393939;
+  cursor: pointer;
+  transition: 0.5s;
+  height: 19px;
+}
+
+.footer-socials img:hover {
+  height: 25px;
+  transition: 0.5s;
 }
 
 @media (max-width: 768px) {

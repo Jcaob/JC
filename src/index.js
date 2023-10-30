@@ -3,6 +3,8 @@ import {
   signInAnonymously,
   signOut,
   onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 
 import { initializeApp } from "firebase/app";
@@ -29,31 +31,67 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-$("#login").on("click", () => {
-  console.log("works");
+$("#test").on("click", () => {
+  sign();
 });
 
-$("#signin").on("click", () => {
-  console.log("works");
-});
+// $("#logIn").on("click", () => {
+//   console.log("works");
+// });
+
+// $("#signIn").on("click", () => {
+//   console.log("works");
+// });
 
 function login() {
-  signInAnonymously(auth)
-    .then(() => {
-      console.log("signed In");
+  let email = $("#emailL").val();
+  let password = $("#passwordL").val();
+
+  signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // Signed up
+      const user = userCredential.user;
+      console.log(user);
     })
     .catch((error) => {
-      console.log("help");
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      alert("ERROR MESSAGE: " + errorMessage);
     });
+  changePage(window.location.hash, "browse");
 }
 
-function logout() {
-  signOut(auth)
-    .then(() => {
-      console.log("signed out");
+function signUp() {
+  let email = $("#emailC").val();
+  let password = $("#passwordC").val();
+  let fName = $("#fNameC").val();
+  let lName = $("#lnameC").val();
+
+  console.log("user " + fName + " " + lName + " " + email + " " + password);
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // Signed up
+      const user = userCredential.user;
+      console.log(user);
     })
     .catch((error) => {
-      console.log("help");
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      alert("ERROR MESSAGE: " + errorMessage);
+    });
+  changePage(window.location.hash, "browse");
+}
+
+function sign() {
+  signOut(auth)
+    .then(() => {
+      // Signed up
+      console.log("Signed Out");
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      alert("ERROR MESSAGE: " + errorMessage);
     });
 }
 
@@ -61,10 +99,27 @@ function route() {
   let hashTag = window.location.hash;
   let pageID = hashTag.replace("#", "");
   $("#bread-crumb").html(``);
-  changePage(hashTag, pageID);
-}
+  // if (pageID == "logInbtn") {
+  //   // this is for logging in
 
-function initListeners() {}
+  //   login();
+  // } else if (pageID == "SignUpbtn") {
+  //   // this is for creating account
+  //   logout();
+  // } else {
+  //   changePage(hashTag, pageID);
+  // }
+  switch (pageID) {
+    case "logInbtn":
+      login();
+      break;
+    case "SignUpbtn":
+      signUp();
+      break;
+    default:
+      changePage(hashTag, pageID);
+  }
+}
 
 function initSite() {
   $(window).on("hashchange", route);

@@ -1,7 +1,7 @@
 {
   "name": "junglecook",
   "version": "1.0.0",
-  "description": "",
+  "description": "Link: https://in-info-web4.informatics.iupui.edu/~jacatala/jungleCook/dist/",
   "main": "webpack.config.js",
   "dependencies": {
     "acorn": "^8.10.0",
@@ -98,7 +98,6 @@
     "resolve-cwd": "^3.0.0",
     "resolve-from": "^5.0.0",
     "safe-buffer": "^5.2.1",
-    "sass": "^1.69.4",
     "schema-utils": "^3.3.0",
     "serialize-javascript": "^6.0.1",
     "shallow-clone": "^3.0.1",
@@ -136,7 +135,9 @@
     "yargs": "^17.7.2",
     "yargs-parser": "^21.1.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "sass": "^1.69.5"
+  },
   "scripts": {
     "serve": "live-server dist",
     "compile": "sass dist/scss/styles.scss dist/css/styles.css -w",
@@ -146,5 +147,3 @@
   "author": "",
   "license": "ISC"
 }
-
-
