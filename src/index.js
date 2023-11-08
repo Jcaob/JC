@@ -225,8 +225,36 @@ async function addDataRecipes(recipe) {
   }
 }
 
+async function getDisplayRecipes() {
+  const querySnapshot = await getDocs(collection(db, "DisplayRecipes"));
+
+  querySnapshot.forEach((doc) => {
+    console.log("get all data");
+    document.getElementById(
+      "display-grid"
+    ).innerHTML += `<div class="display-Recipes">
+    <div class="display-card">
+      <div class="display-image"></div>
+      <div class="display-info">
+        <h1 class="display-title">${doc.data().ItemName}</h1>
+        <p class="display-des">
+        ${doc.data().recipeDes}
+        </p>
+        <div class="display-time"><img src="" alt="" />${
+          doc.data().rescipeTT
+        }</div>
+        <div class="display-servings"><img src="" alt="" />${
+          doc.data().rescepeSS
+        }</div>
+      </div>
+    </div>
+  </div>`;
+  });
+}
+
 function initSite() {
   $(window).on("hashchange", route);
+  $(window).on("hashchange", getDisplayRecipes);
   route();
 }
 

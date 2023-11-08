@@ -8,8 +8,66 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  height: calc(100vh);
+  height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  .browse-title {
+    position: absolute;
+    top: 80px;
+    right: 1000px;
+  }
+}
+.display-grid {
+  margin-top: 70px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two columns */
+  grid-template-rows: repeat(2, 1fr); /* Two rows */
+  grid-gap: 50px;
+
+  .display-Recipes {
+    .display-card {
+      display: flex;
+
+      width: 524px;
+
+      .display-image {
+        height: 263px;
+        width: 300px;
+        border-radius: 15px;
+        background-color: #161848;
+      }
+
+      .display-info {
+        height: 263px;
+        width: 224px;
+        border-radius: 15px;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .display-des {
+          text-align: center;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .display-grid {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .content-browse {
+    height: 1500px;
+  }
+
+  .static {
+    bottom: -450px;
+  }
 }
