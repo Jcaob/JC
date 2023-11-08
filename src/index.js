@@ -19,6 +19,10 @@ const firebaseConfig = {
   measurementId: "G-JFFCNRLNX5",
 };
 
+var count = 3;
+var countInst = 3;
+var recipeArr = [];
+
 const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
@@ -26,12 +30,14 @@ const auth = getAuth(app);
 onAuthStateChanged(auth, (user) => {
   if (user != null) {
     console.log("logged in", user);
+    $(".login").html("Logout");
   } else {
     console.log("no user");
+    $(".login").html("Login");
   }
 });
 
-$("#test").on("click", () => {
+$(".test").on("click", () => {
   sign();
 });
 
@@ -116,9 +122,83 @@ function route() {
     case "SignUpbtn":
       signUp();
       break;
+    case "add":
+      inputAdd();
+      break;
+    case "form":
+      grabFormData();
+      break;
     default:
       changePage(hashTag, pageID);
   }
+}
+
+function inputAdd() {
+  $(".addIng").on("click", (e) => {
+    count++;
+    $(".formIng").append(
+      `<input type="text" placeholder="Recipe Ingredient ${count}" id="desc${
+        count - 1
+      }" />`
+    );
+  });
+
+  $(".addInst").on("click", (e) => {
+    countInst++;
+    $(".formInst").append(
+      `<input type="text" placeholder="Recipe Instruction ${countInst}" id="isnt${
+        countInst - 1
+      }" />`
+    );
+  });
+}
+
+function grabFormData() {
+  $(".submit").on("click", (e) => {
+    let newItemObj = {};
+    let imagePath = $("#imagePath").val();
+    let ItemName = $("#ItemName").val();
+    let recipeDes = $("#recipeDes").val();
+    let rescipeTT = $("#rescipeTT").val();
+    let rescepeSS = $("#rescepeSS").val();
+
+    newItemObj.imagePath = imagePath;
+    newItemObj.ItemName = ItemName;
+    newItemObj.recipeDes = recipeDes;
+    newItemObj.rescipeTT = rescipeTT;
+    newItemObj.rescepeSS = rescepeSS;
+    console.log(imagePath + " " + newItemObj.ItemName);
+
+    newItemObj.Ingredients = [];
+
+    $(".formIng input").each(function (index, data) {
+      var value = $(this).val();
+      if (value != "") {
+        let keyName = "Ingredient" + index;
+        let ingObj = {};
+        ingObj[keyName] = value;
+        newItemObj.Ingredients.push(ingObj);
+        console.log("Desc ", newItemObj);
+      } else {
+      }
+    });
+    newItemObj.Instructions = [];
+    $(".formInst input").each(function (index, data) {
+      var value = $(this).val();
+      if (value != "") {
+        let keyName = "Instructions" + index;
+        let instObj = {};
+        instObj[keyName] = value;
+        newItemObj.Instructions.push(instObj);
+        console.log(value);
+      } else {
+      }
+    });
+
+    recipeArr.push(newItemObj);
+    console.log("Recipes ", recipeArr);
+    changePage(window.location.hash, "browse");
+  });
 }
 
 function initSite() {

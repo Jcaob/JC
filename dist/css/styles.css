@@ -73,9 +73,10 @@ p {
 .hamburger-icon div {
   width: 35px;
   height: 3px;
-  background-color: #fff;
+  background-color: #181818;
   margin: 6px 0;
   transition: 0.5s;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .open .bar1 {
@@ -188,7 +189,16 @@ p {
   margin-left: 15px;
 }
 
-footer {
+.movable {
+  height: 50px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.static {
   height: 50px;
   padding: 0 20px;
   display: flex;
@@ -364,6 +374,144 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+#spacer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.form-holder {
+  width: 900px;
+  margin-top: 50px;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.form-holder input {
+  display: flex;
+  width: 100%;
+  margin-bottom: 25px;
+  height: 50px;
+  border: none;
+  border-bottom: 2px solid #181818;
+  padding-left: 5px;
+}
+
+.formTop {
+  position: relative;
+}
+
+.formTop .imageBtn {
+  position: absolute;
+  top: 13px;
+  cursor: pointer;
+  right: 0;
+  width: 75px;
+  height: 30px;
+  background-color: pink;
+  color: #181818;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  transition: 0.5s;
+  font-size: 14px;
+}
+
+.formIng {
+  position: relative;
+}
+
+.formIng .addIng {
+  position: absolute;
+  bottom: 30px;
+  cursor: pointer;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  background-color: pink;
+  color: white;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
+  transition: 0.5s;
+  font-size: 14px;
+}
+
+.addIng:hover {
+  transition: 0.5s;
+  width: 35px;
+  height: 35px;
+  background-color: rgb(213, 167, 175);
+}
+
+.formInst {
+  position: relative;
+}
+
+.formInst .addInst {
+  position: absolute;
+  bottom: 30px;
+  cursor: pointer;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  background-color: pink;
+  color: white;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
+  transition: 0.5s;
+  font-size: 14px;
+}
+
+.addInst:hover {
+  transition: 0.5s;
+  width: 35px;
+  height: 35px;
+  background-color: rgb(213, 167, 175);
+}
+
+.imageBtn:hover {
+  transition: 0.5s;
+  width: 80px;
+  height: 35px;
+  background-color: rgb(213, 167, 175);
+}
+
+.formInst,
+.formIng {
+  margin-top: 50px;
+}
+
+.btn {
+  width: 150px;
+  height: 50px;
+  background-color: rgb(213, 167, 175);
+  color: white;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 25px;
+  transition: 0.5s;
+  text-decoration: none;
+}
+
+.btn:hover {
+  width: 160px;
+  height: 60px;
+  transition: 0.5s;
+  background-color: rgb(213, 167, 175);
 }
 
 /*# sourceMappingURL=styles.css.map */
