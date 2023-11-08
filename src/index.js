@@ -1,3 +1,4 @@
+import { async } from "@firebase/util";
 import {
   getAuth,
   signInAnonymously,
@@ -6,6 +7,16 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+
+import {
+  getFirestore,
+  getDoc,
+  collection,
+  addDoc,
+  where,
+  getDocs,
+  query,
+} from "firebase/firestore";
 
 import { initializeApp } from "firebase/app";
 
@@ -26,6 +37,8 @@ var recipeArr = [];
 const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
+
+const db = getFirestore(app);
 
 onAuthStateChanged(auth, (user) => {
   if (user != null) {
@@ -155,21 +168,21 @@ function inputAdd() {
 
 function grabFormData() {
   $(".submit").on("click", (e) => {
-    let newItemObj = {};
     let imagePath = $("#imagePath").val();
     let ItemName = $("#ItemName").val();
     let recipeDes = $("#recipeDes").val();
     let rescipeTT = $("#rescipeTT").val();
     let rescepeSS = $("#rescepeSS").val();
 
-    newItemObj.imagePath = imagePath;
-    newItemObj.ItemName = ItemName;
-    newItemObj.recipeDes = recipeDes;
-    newItemObj.rescipeTT = rescipeTT;
-    newItemObj.rescepeSS = rescepeSS;
-    console.log(imagePath + " " + newItemObj.ItemName);
-
-    newItemObj.Ingredients = [];
+    let recipe = {
+      imagePath: imagePath,
+      ItemName: ItemName,
+      recipeDes: recipeDes,
+      rescipeTT: rescipeTT,
+      rescepeSS: rescepeSS,
+      Ingredients: [],
+      Instructions: [],
+    };
 
     $(".formIng input").each(function (index, data) {
       var value = $(this).val();
@@ -177,28 +190,39 @@ function grabFormData() {
         let keyName = "Ingredient" + index;
         let ingObj = {};
         ingObj[keyName] = value;
-        newItemObj.Ingredients.push(ingObj);
-        console.log("Desc ", newItemObj);
+        recipe.Ingredients.push(ingObj);
       } else {
       }
     });
-    newItemObj.Instructions = [];
+
     $(".formInst input").each(function (index, data) {
       var value = $(this).val();
       if (value != "") {
         let keyName = "Instructions" + index;
         let instObj = {};
         instObj[keyName] = value;
-        newItemObj.Instructions.push(instObj);
+        recipe.Instructions.push(instObj);
         console.log(value);
       } else {
       }
     });
 
-    recipeArr.push(newItemObj);
-    console.log("Recipes ", recipeArr);
+    addDataRecipes(recipe);
+    console.log(recipe);
     changePage(window.location.hash, "browse");
+    count = 3;
+    countInst = 3;
   });
+}
+
+async function addDataRecipes(recipe) {
+  try {
+    const docRef = await addDoc(collection(db, "Recipes"), recipe);
+
+    console.log("doc id:", docRef.id);
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 function initSite() {
