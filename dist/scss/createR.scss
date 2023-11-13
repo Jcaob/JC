@@ -28,6 +28,19 @@
   position: relative;
 }
 
+#setter {
+  visibility: hidden;
+  position: absolute;
+}
+
+#imagePath {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  text-decoration: none;
+}
+
 .formTop .imageBtn {
   position: absolute;
   top: 13px;
@@ -43,6 +56,20 @@
   border-radius: 10px;
   transition: 0.5s;
   font-size: 14px;
+}
+
+.formTop .imagePreview {
+  position: absolute;
+  top: 13px;
+  right: 200px;
+  width: 75px;
+  height: 30px;
+  border-radius: 10px;
+}
+
+.formTop a {
+  text-decoration: none;
+  color: #181818;
 }
 
 .formIng {

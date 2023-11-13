@@ -29,6 +29,13 @@ const firebaseConfig = {
   appId: "1:267300016965:web:ef722b8e6938894f36e42c",
   measurementId: "G-JFFCNRLNX5",
 };
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
 
 var count = 3;
 var countInst = 3;
@@ -39,6 +46,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 const db = getFirestore(app);
+const storage = getStorage(app);
 
 onAuthStateChanged(auth, (user) => {
   if (user != null) {
@@ -141,6 +149,9 @@ function route() {
     case "form":
       grabFormData();
       break;
+    case "upload":
+      upload();
+      break;
     default:
       changePage(hashTag, pageID);
   }
@@ -166,9 +177,60 @@ function inputAdd() {
   });
 }
 
+function upload() {
+  let file = $("#imagePath").get(0).files[0];
+  let fileName = +new Date() + "-" + file.name;
+  let metadata = { contentType: file.type };
+
+  let pathRef = ref(storage, "images/" + fileName);
+  const storageRef = ref(storage, pathRef);
+
+  //   const uploadTask = uploadBytes(storageRef, file).then((snapshot) => {
+  //     getDownloadURL(snapshot.ref).then((DownloadURL) => {
+  //       console.log("file avalible at ", DownloadURL);
+  //     });
+  //   });
+
+  const uploadTask = uploadBytesResumable(storageRef, file);
+
+  // Register three observers:
+  // 1. 'state_changed' observer, called any time the state changes
+  // 2. Error observer, called on failure
+  // 3. Completion observer, called on successful completion
+  uploadTask.on(
+    "state_changed",
+    (snapshot) => {
+      // Observe state change events such as progress, pause, and resume
+      // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      console.log("Upload is " + progress + "% done");
+      $(".bar").css("width", progress + "%");
+      switch (snapshot.state) {
+        case "paused":
+          console.log("Upload is paused");
+          break;
+        case "running":
+          console.log("Upload is running");
+          break;
+      }
+    },
+    (error) => {
+      // Handle unsuccessful uploads
+    },
+    () => {
+      // Handle successful uploads on complete
+      // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        console.log("File Done Here da URL", downloadURL);
+        $("#setter").val(downloadURL);
+      });
+    }
+  );
+}
+
 function grabFormData() {
   $(".submit").on("click", (e) => {
-    let imagePath = $("#imagePath").val();
+    let imagePath = $("#setter").val();
     let ItemName = $("#ItemName").val();
     let recipeDes = $("#recipeDes").val();
     let rescipeTT = $("#rescipeTT").val();
@@ -234,7 +296,8 @@ async function getDisplayRecipes() {
       "display-grid"
     ).innerHTML += `<div class="display-Recipes">
     <div class="display-card">
-      <div class="display-image"></div>
+  
+      <img src="${doc.data().imagePath}" class="display-image" />
       <div class="display-info">
         <h1 class="display-title">${doc.data().ItemName}</h1>
         <p class="display-des">
