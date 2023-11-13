@@ -373,6 +373,10 @@ async function getRecipeData() {
     console.log("No such document!");
   }
 
+  document.getElementById("detail-container").innerHTML += `<h1>${
+    docSnap.data().ItemName
+  }</h1>`;
+
   // getDocs(collection(db, "Recipes"))
   //   .doc(docID)
   //   .get()
