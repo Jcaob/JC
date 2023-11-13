@@ -232,10 +232,13 @@ function upload() {
   );
 }
 
-function setPage(id) {
+function setPage() {
   $(".setpage").on("click", () => {
+    $(".setpage").addClass("setpage selected");
+
+    let id = $(".selected").attr("id");
     page = id;
-    console.log(page);
+    console.log("id is", id);
   });
 }
 
@@ -333,10 +336,11 @@ async function getUserDisplayRecipes() {
   querySnapshot.forEach((doc) => {
     // console.log(doc.id);
     let id = doc.id;
+
     document.getElementById(
       "display-grid-user"
     ).innerHTML += `<div class="display-Recipes">
-    <a href="#detail" class="setpage">
+    <a href="#detail" class="setpage" id=${doc.id}>
     <div class="display-card">
       <div class="display-containter">
       <img src="${doc.data().imagePath}" class="display-image" />
@@ -357,7 +361,8 @@ async function getUserDisplayRecipes() {
     </a>
   </div>`;
 
-    setPage(id);
+    setPage();
+    console.log(id);
   });
 }
 
