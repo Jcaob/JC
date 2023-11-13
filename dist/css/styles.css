@@ -393,9 +393,26 @@ footer {
   grid-template-rows: repeat(2, 1fr); /* Two rows */
   grid-gap: 50px;
 }
+.display-grid a {
+  text-decoration: none;
+  color: black;
+}
 .display-grid .display-Recipes .display-card {
   display: flex;
   width: 524px;
+}
+.display-grid .display-Recipes .display-card .display-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.display-grid .display-Recipes .display-card .display-link {
+  position: absolute;
+  padding: 5px 10px;
+  border-radius: 25px;
+  background-color: #ffd972;
+  left: 350px;
+  top: 250px;
 }
 .display-grid .display-Recipes .display-card .display-image {
   height: 263px;

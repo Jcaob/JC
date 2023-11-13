@@ -16,6 +16,7 @@ import {
   where,
   getDocs,
   query,
+  doc,
 } from "firebase/firestore";
 
 import { initializeApp } from "firebase/app";
@@ -40,6 +41,7 @@ import {
 var count = 3;
 var countInst = 3;
 var recipeArr = [];
+let page = "";
 
 const app = initializeApp(firebaseConfig);
 
@@ -52,9 +54,11 @@ onAuthStateChanged(auth, (user) => {
   if (user != null) {
     console.log("logged in", user);
     $(".login").html("Logout");
+    $(".userRes").append(`<a href="#userRecipes" >Your Recipes</a>`);
   } else {
     console.log("no user");
     $(".login").html("Login");
+    $(".userRes").html(``);
   }
 });
 
@@ -228,6 +232,13 @@ function upload() {
   );
 }
 
+function setPage(id) {
+  $(".setpage").on("click", () => {
+    page = id;
+    console.log(page);
+  });
+}
+
 function grabFormData() {
   $(".submit").on("click", (e) => {
     let imagePath = $("#setter").val();
@@ -280,8 +291,9 @@ function grabFormData() {
 async function addDataRecipes(recipe) {
   try {
     const docRef = await addDoc(collection(db, "Recipes"), recipe);
+    const uid = doc.id;
 
-    console.log("doc id:", docRef.id);
+    console.log("doc id:", docRef.id, "uid", uid);
   } catch (e) {
     console.log(e);
   }
@@ -315,9 +327,69 @@ async function getDisplayRecipes() {
   });
 }
 
+async function getUserDisplayRecipes() {
+  const querySnapshot = await getDocs(collection(db, "Recipes"));
+
+  querySnapshot.forEach((doc) => {
+    // console.log(doc.id);
+    let id = doc.id;
+    document.getElementById(
+      "display-grid-user"
+    ).innerHTML += `<div class="display-Recipes">
+    <a href="#detail" class="setpage">
+    <div class="display-card">
+      <div class="display-containter">
+      <img src="${doc.data().imagePath}" class="display-image" />
+      </div>
+      <div class="display-info">
+        <h1 class="display-title">${doc.data().ItemName}</h1>
+        <p class="display-des">
+        ${doc.data().recipeDes}
+        </p>
+        <div class="display-time"><img src="" alt="" />${
+          doc.data().rescipeTT
+        }</div>
+        <div class="display-servings"><img src="" alt="" />${
+          doc.data().rescepeSS
+        }</div>
+      </div>
+    </div>
+    </a>
+  </div>`;
+
+    setPage(id);
+  });
+}
+
+async function getRecipeData() {
+  let docID = page;
+  const docRef = doc(db, "Recipes", docID);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    console.log("Document data:", docSnap.data().ItemName);
+  } else {
+    // docSnap.data() will be undefined in this case
+    console.log("No such document!");
+  }
+
+  // getDocs(collection(db, "Recipes"))
+  //   .doc(docID)
+  //   .get()
+  //   .then((doc) => {
+  //     if (doc.exists) {
+  //       console.log("Doc Exists");
+  //     } else {
+  //       console.log("Doc doesnt exist");
+  //     }
+  //   });
+}
+
 function initSite() {
   $(window).on("hashchange", route);
   $(window).on("hashchange", getDisplayRecipes);
+  $(window).on("hashchange", getUserDisplayRecipes);
+  $(window).on("hashchange", getRecipeData);
   route();
 }
 

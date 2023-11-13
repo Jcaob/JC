@@ -27,12 +27,31 @@
   grid-template-rows: repeat(2, 1fr); /* Two rows */
   grid-gap: 50px;
 
+  a {
+    text-decoration: none;
+    color: black;
+  }
+
   .display-Recipes {
     .display-card {
       display: flex;
 
       width: 524px;
 
+      .display-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .display-link {
+        position: absolute;
+        padding: 5px 10px;
+        border-radius: 25px;
+        background-color: #ffd972;
+        left: 350px;
+        top: 250px;
+      }
       .display-image {
         height: 263px;
         width: 300px;
