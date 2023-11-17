@@ -17,6 +17,7 @@ import {
   getDocs,
   query,
   doc,
+  updateDoc,
 } from "firebase/firestore";
 
 import { initializeApp } from "firebase/app";
@@ -156,6 +157,9 @@ function route() {
     case "upload":
       upload();
       break;
+    case "update":
+      grabEditFormData();
+      break;
     default:
       changePage(hashTag, pageID);
   }
@@ -291,6 +295,55 @@ function grabFormData() {
   });
 }
 
+function grabEditFormData() {
+  $(".submit").on("click", (e) => {
+    let imagePath = $("#setter").val();
+    let ItemName = $("#ItemName").val();
+    let recipeDes = $("#recipeDes").val();
+    let rescipeTT = $("#rescipeTT").val();
+    let rescepeSS = $("#rescepeSS").val();
+
+    let recipe = {
+      imagePath: imagePath,
+      ItemName: ItemName,
+      recipeDes: recipeDes,
+      rescipeTT: rescipeTT,
+      rescepeSS: rescepeSS,
+      Ingredients: [],
+      Instructions: [],
+    };
+
+    $(".formIng input").each(function (index, data) {
+      var value = $(this).val();
+      if (value != "") {
+        let keyName = "Ingredient" + index;
+        let ingObj = {};
+        ingObj[keyName] = value;
+        recipe.Ingredients.push(ingObj);
+      } else {
+      }
+    });
+
+    $(".formInst input").each(function (index, data) {
+      var value = $(this).val();
+      if (value != "") {
+        let keyName = "Instructions" + index;
+        let instObj = {};
+        instObj[keyName] = value;
+        recipe.Instructions.push(instObj);
+        console.log(value);
+      } else {
+      }
+    });
+
+    editDataRecipes(recipe);
+    console.log(recipe);
+    changePage(window.location.hash, "browse");
+    count = 3;
+    countInst = 3;
+  });
+}
+
 async function addDataRecipes(recipe) {
   try {
     const docRef = await addDoc(collection(db, "Recipes"), recipe);
@@ -300,6 +353,28 @@ async function addDataRecipes(recipe) {
   } catch (e) {
     console.log(e);
   }
+}
+
+async function editDataRecipes(recipe) {
+  try {
+    const docRef = doc(db, "Recipes", page);
+
+    const uid = doc.id;
+
+    await updateDoc(docRef, {
+      imagePath: recipe.imagePath,
+      ItemName: recipe.ItemName,
+      recipeDes: recipe.recipeDes,
+      rescipeTT: recipe.recipeTT,
+      rescepeSS: recipe.rescepeSS,
+      Ingredients: recipe.Ingredients,
+      Instructions: recipe.Instructions,
+    });
+  } catch (e) {
+    console.log(e);
+  }
+
+  // Set the "capital" field of the city 'DC'
 }
 
 async function getDisplayRecipes() {
@@ -328,6 +403,57 @@ async function getDisplayRecipes() {
     </div>
   </div>`;
   });
+}
+
+async function getEditRecipe() {
+  let docID = page;
+  const docRef = doc(db, "Recipes", docID);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    console.log("Edit Document data:", docSnap.data().recipeTT);
+  } else {
+    // docSnap.data() will be undefined in this case
+    console.log("No such document!");
+  }
+
+  document.getElementById("edit-container").innerHTML += `
+  <div id="spacer">
+  <div class="form-holder">
+    <h1>Edit your recipe!</h1>
+    <div class="formTop">
+      <a href="#upload"><div class="imageBtn">Upload File</div></a>
+      <input type="file" placeholder="Image URL/ Image Name" id="imagePath" />
+      <input type="text" id="setter" />
+      <input type="text" placeholder="${
+        docSnap.data().ItemName
+      }" id="ItemName" />
+      <input type="text" placeholder="${
+        docSnap.data().recipeDes
+      }" id="recipeDes" />
+      <input type="text" placeholder="${
+        docSnap.data().rescipeTT
+      }" id="rescipeTT" />
+      <input type="text" placeholder="${
+        docSnap.data().rescepeSS
+      }" id="rescepeSS" />
+    </div>
+    <div class="formIng">
+      <input type="text" placeholder="Recipe Ingredient 1" id="desc0" />
+      <input type="text" placeholder="Recipe Ingredient 2" id="desc1" />
+      <input type="text" placeholder="Recipe Ingredient 3" id="desc2" />
+      <a class="addIng" href="#add">+</a>
+    </div>
+    <div class="formInst">
+      <input type="text" placeholder="Recipe Instruction 1" id="inst0" />
+      <input type="text" placeholder="Recipe Instruction 2" id="isnt1" />
+      <input type="text" placeholder="Recipe Instruction 3" id="isnt2" />
+      <a class="addInst" href="#add">+</a>
+    </div>
+    <a href="#update" class="submit btn">SUBMIT</a>
+  </div>
+</div>
+  `;
 }
 
 async function getUserDisplayRecipes() {
@@ -372,26 +498,97 @@ async function getRecipeData() {
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-    console.log("Document data:", docSnap.data().ItemName);
+    console.log("Document data:", docSnap.data());
   } else {
     // docSnap.data() will be undefined in this case
     console.log("No such document!");
   }
 
-  document.getElementById("detail-container").innerHTML += `<h1>${
+  document.getElementById("detail-container").innerHTML += `
+  <div class="recipe-detail-holder">
+  <div class="recipe-detail-container">
+  <h1 class="recipe-title" style="writing-mode: tb-rl;">${
     docSnap.data().ItemName
-  }</h1>`;
-
-  // getDocs(collection(db, "Recipes"))
-  //   .doc(docID)
-  //   .get()
-  //   .then((doc) => {
-  //     if (doc.exists) {
-  //       console.log("Doc Exists");
-  //     } else {
-  //       console.log("Doc doesnt exist");
-  //     }
-  //   });
+  }</h1>
+      <div class="recipe-head">
+        <img src="${docSnap.data().imagePath}">
+        <div class="recipe-detail-info">
+          <h1>Description:</h1>
+          <p>${docSnap.data().recipeDes}</p>
+          <h1 class="recipe-info-title">Total Time:</h1>
+          <p>${docSnap.data().rescipeTT}</p>
+          <h1 class="recipe-info-title">Serving Size:</h1>
+          <p>${docSnap.data().rescepeSS}</p>
+        </div>
+      </div>
+      <div class="recipe-array">
+        <h1>Ingredients:</h1>
+        <p>${docSnap.data().Ingredients[0].Ingredient0}</p>
+        <p>${docSnap.data().Ingredients[1].Ingredient1}</p>
+        <p>${docSnap.data().Ingredients[2].Ingredient2}</p>
+        ${
+          docSnap.data().Ingredients[3]?.Ingredient3
+            ? `<p>${docSnap.data().Ingredients[3].Ingredient3}</p>`
+            : ""
+        }
+        ${
+          docSnap.data().Ingredients[4]?.Ingredient4
+            ? `<p>${docSnap.data().Ingredients[4].Ingredient4}</p>`
+            : ""
+        }
+        ${
+          docSnap.data().Ingredients[5]?.Ingredient5
+            ? `<p>${docSnap.data().Ingredients[5].Ingredient5}</p>`
+            : ""
+        }
+        ${
+          docSnap.data().Ingredients[6]?.Ingredient6
+            ? `<p>${docSnap.data().Ingredients[6].Ingredient6}</p>`
+            : ""
+        }
+        ${
+          docSnap.data().Ingredients[7]?.Ingredient7
+            ? `<p>${docSnap.data().Ingredients[7].Ingredient7}</p>`
+            : ""
+        }
+      </div>
+      <div class="recipe-array">
+      <h1>Instructions:</h1>
+      <p>1.${docSnap.data().Instructions[0].Instructions0}</p>
+      <p>2.${docSnap.data().Instructions[1].Instructions1}</p>
+      <p>3.${docSnap.data().Instructions[2].Instructions2}</p>
+      ${
+        docSnap.data().Instructions[3]?.Instructions3
+          ? `<p>4.${docSnap.data().Instructions[3].Instructions3}</p>`
+          : ""
+      }
+      ${
+        docSnap.data().Instructions[4]?.Instructions4
+          ? `<p>5.${docSnap.data().Instructions[4].Instructions4}</p>`
+          : ""
+      }
+      ${
+        docSnap.data().Instructions[5]?.Instructions5
+          ? `<p>6.${docSnap.data().Instructions[5].Instructions5}</p>`
+          : ""
+      }
+      ${
+        docSnap.data().Instructions[6]?.Instructions6
+          ? `<p>7.${docSnap.data().Instructions[6].Instructions6}</p>`
+          : ""
+      }
+      ${
+        docSnap.data().Instructions[7]?.Instructions7
+          ? `<p>8.${docSnap.data().Instructions[7].Instructions7}</p>`
+          : ""
+      }
+    </div>
+    <a href="#edit"><div class="recipe-edit-button">Edit</div></a>
+  </div>
+      
+  </div>
+  
+  `;
 }
 
 function initSite() {
@@ -399,6 +596,7 @@ function initSite() {
   $(window).on("hashchange", getDisplayRecipes);
   $(window).on("hashchange", getUserDisplayRecipes);
   $(window).on("hashchange", getRecipeData);
+  $(window).on("hashchange", getEditRecipe);
   route();
 }
 
